@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 380" width="1200" height="380" font-family="'Segoe UI', 'Helvetica Neue', Arial, sans-serif">
+  <!-- Paleta Tokyo Night (github.com/folke/tokyonight.nvim) -->
+  <defs>
+    <linearGradient id="title" x1="0" x2="1"><stop offset="0" stop-color="#7AA2F7"/><stop offset="1" stop-color="#BB9AF7"/></linearGradient>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#1F2335" stroke-width="1"/>
+    </pattern>
+    <style>
+      .node { fill: #24283B; stroke-width: 2; }
+      .label { fill: #C0CAF5; font-size: 17px; font-weight: 600; text-anchor: middle; }
+      .sub { fill: #9AA5CE; font-size: 13px; text-anchor: middle; }
+      .tag { font-size: 13px; text-anchor: middle; }
+      .flow { fill: none; stroke-width: 2.5; stroke-dasharray: 6 8; animation: dash 1.2s linear infinite; }
+      @keyframes dash { to { stroke-dashoffset: -28; } }
+      .ping { animation: ping 3s ease-out infinite; transform-box: fill-box; transform-origin: center; }
+      @keyframes ping { 0% { opacity: .9; transform: scale(1); } 70%, 100% { opacity: 0; transform: scale(1.25); } }
+    </style>
+  </defs>
+
+  <rect width="1200" height="380" rx="18" fill="#16161E"/>
+  <rect width="1200" height="380" rx="18" fill="url(#grid)" opacity="0.6"/>
+
+  <text x="60" y="84" font-size="50" font-weight="800" fill="url(#title)">Realtime Fraud Pipeline</text>
+  <text x="62" y="124" font-size="21" fill="#C0CAF5">Cada pago se analiza mientras ocurre: la alerta llega antes de que acabe el ataque.</text>
+  <text x="62" y="154" font-size="15" fill="#9AA5CE">Java 21 · Spring Boot 4 · Apache Kafka (KRaft) · Kafka Streams · WebFlux · SSE · Testcontainers</text>
+
+  <!-- Flujo principal -->
+  <path class="flow" stroke="#7DCFFF" d="M210 250 H300"/>
+  <path class="flow" stroke="#7DCFFF" d="M450 250 H540"/>
+  <path class="flow" stroke="#F7768E" d="M720 250 H810"/>
+  <path class="flow" stroke="#F7768E" d="M960 250 H1040"/>
+  <!-- DLQ -->
+  <path class="flow" stroke="#E0AF68" d="M630 290 V322 H720"/>
+
+  <circle r="6" fill="#7DCFFF"><animateMotion dur="2.2s" repeatCount="indefinite" path="M210 250 H300"/></circle>
+  <circle r="6" fill="#7DCFFF"><animateMotion dur="2.2s" begin="0.7s" repeatCount="indefinite" path="M450 250 H540"/></circle>
+  <circle r="6" fill="#F7768E"><animateMotion dur="2.2s" begin="1.4s" repeatCount="indefinite" path="M720 250 H810"/></circle>
+  <circle r="6" fill="#F7768E"><animateMotion dur="2.2s" begin="1.8s" repeatCount="indefinite" path="M960 250 H1040"/></circle>
+  <circle r="5" fill="#E0AF68"><animateMotion dur="3.3s" begin="1s" repeatCount="indefinite" path="M630 290 V322 H720"/></circle>
+
+  <rect class="node" x="60" y="210" width="150" height="80" rx="14" stroke="#9ECE6A"/>
+  <text class="label" x="135" y="245">Productor</text>
+  <text class="sub" x="135" y="267">pagos y ataques</text>
+
+  <rect class="node" x="300" y="210" width="150" height="80" rx="14" stroke="#7DCFFF"/>
+  <text class="label" x="375" y="245">Kafka</text>
+  <text class="sub" x="375" y="267">transactions</text>
+
+  <rect class="node ping" x="540" y="210" width="180" height="80" rx="14" stroke="#BB9AF7"/>
+  <rect class="node" x="540" y="210" width="180" height="80" rx="14" stroke="#BB9AF7"/>
+  <text class="label" x="630" y="245">Kafka Streams</text>
+  <text class="sub" x="630" y="267">ventanas · reglas · estado</text>
+
+  <rect class="node" x="810" y="210" width="150" height="80" rx="14" stroke="#F7768E"/>
+  <text class="label" x="885" y="245">Kafka</text>
+  <text class="sub" x="885" y="267">fraud-alerts</text>
+
+  <rect class="node" x="1040" y="210" width="110" height="80" rx="14" stroke="#7AA2F7"/>
+  <text class="label" x="1095" y="245">Panel</text>
+  <text class="sub" x="1095" y="267">SSE</text>
+
+  <rect class="node" x="720" y="304" width="150" height="38" rx="10" stroke="#E0AF68"/>
+  <text class="sub" x="795" y="328">transactions.dlq</text>
+
+  <text class="tag" x="255" y="236" fill="#7DCFFF">JSON</text>
+  <text class="tag" x="765" y="236" fill="#F7768E">EOS</text>
+  <text class="tag" x="1000" y="236" fill="#F7768E">vivo</text>
+</svg>

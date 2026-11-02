@@ -1,0 +1,47 @@
+// dot -Tsvg docs/topology.dot -o docs/img/topology.svg
+digraph topology {
+    graph [rankdir=LR, bgcolor="#1A1B26", pad=0.3, nodesep=0.28, ranksep=0.5, fontname="Segoe UI", fontcolor="#C0CAF5"];
+    node [shape=box, style="rounded,filled", fillcolor="#24283B", color="#292E42", fontcolor="#C0CAF5", fontname="Segoe UI", fontsize=12, margin="0.16,0.09"];
+    edge [color="#7AA2F7", fontcolor="#9AA5CE", fontname="Segoe UI", fontsize=10, arrowsize=0.7];
+
+    node [shape=cylinder, color="#7DCFFF", fontcolor="#7DCFFF"];
+    transactions [label="transactions\n6 particiones"];
+    alerts [label="fraud-alerts", color="#F7768E", fontcolor="#F7768E"];
+    dlq [label="transactions.dlq", color="#E0AF68", fontcolor="#E0AF68"];
+
+    node [shape=box, color="#292E42", fontcolor="#C0CAF5"];
+    parse [label="Parser\nJSON + validación\nevent time"];
+    dedup [label="Deduplicación\npor transactionId"];
+    headers [label="Cabeceras\nmotivo y origen", color="#E0AF68"];
+    volume [label="Tumbling 1 min\npor país"];
+    activity [label="Hopping 60 s / 10 s\npor tarjeta"];
+    velocity [label="Regla VELOCITY\n≥ 8 operaciones", color="#E0AF68"];
+    profile [label="Perfil de tarjeta\nIMPOSSIBLE_TRAVEL\nAMOUNT_SPIKE", color="#BB9AF7"];
+    cooldown [label="Enfriamiento\nuna alerta cada 5 min\npor tarjeta y regla", color="#F7768E"];
+
+    node [shape=note, color="#9ECE6A", fontcolor="#9ECE6A"];
+    s_seen [label="seen-transactions"];
+    s_volume [label="volume-by-country-1m"];
+    s_activity [label="card-activity-60s"];
+    s_profiles [label="card-profiles"];
+    s_cooldown [label="alert-cooldown"];
+
+    transactions -> parse;
+    parse -> dedup [label="válido"];
+    parse -> headers [label="inválido", color="#E0AF68"];
+    headers -> dlq [color="#E0AF68"];
+    dedup -> volume [label="reparticiona"];
+    dedup -> activity;
+    dedup -> profile;
+    activity -> velocity;
+    velocity -> cooldown;
+    profile -> cooldown;
+    cooldown -> alerts [color="#F7768E"];
+
+    edge [color="#9ECE6A", style=dashed, dir=both, arrowsize=0.5];
+    dedup -> s_seen;
+    volume -> s_volume;
+    activity -> s_activity;
+    profile -> s_profiles;
+    cooldown -> s_cooldown;
+}
