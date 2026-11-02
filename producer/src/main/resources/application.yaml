@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: transaction-producer
+  main:
+    web-application-type: none
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:29092}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      acks: all
+      properties:
+        # Un reintento de red no duplica ni desordena mensajes dentro de una partición.
+        enable.idempotence: true
+        delivery.timeout.ms: 60000
+        linger.ms: 10
+
+generator:
+  cards: ${GENERATOR_CARDS:600}
+  transactions-per-second: ${GENERATOR_TPS:15}
+  attack-every: ${GENERATOR_ATTACK_EVERY:20s}
+  min-history-for-spike: 5
+  duplicate-rate: 0.01
+  malformed-rate: 0.003
+  invalid-rate: 0.002
+  late-rate: 0.02

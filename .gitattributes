@@ -1,0 +1,6 @@
+* text=auto
+mvnw text eol=lf
+*.cmd text eol=crlf
+*.gif binary
+*.png binary
+.mvn/wrapper/maven-wrapper.properties text eol=lf
