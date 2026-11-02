@@ -1,0 +1,9 @@
+<configuration>
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder><pattern>%d{HH:mm:ss} %-5level %logger{20} - %msg%n</pattern></encoder>
+    </appender>
+    <!-- Los permisos POSIX no existen en Windows y los descartes por ventana expirada son esperados en los tests. -->
+    <logger name="org.apache.kafka.streams.processor.internals.StateDirectory" level="OFF"/>
+    <logger name="org.apache.kafka.streams.kstream.internals.KStreamWindowAggregate" level="OFF"/>
+    <root level="WARN"><appender-ref ref="CONSOLE"/></root>
+</configuration>

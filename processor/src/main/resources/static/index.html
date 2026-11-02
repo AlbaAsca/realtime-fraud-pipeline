@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Fraude en tiempo real</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<main class="container">
+    <header>
+        <div>
+            <h1>Fraude en tiempo real</h1>
+            <p class="subtitle">Kafka Streams · transacciones de tarjeta · ventanas por event time</p>
+        </div>
+        <span id="live" class="live off">Conectando…</span>
+    </header>
+
+    <section class="kpis">
+        <article class="kpi"><span class="label">Último minuto completo</span><strong id="kpi-rate">–</strong><span class="hint">operaciones</span></article>
+        <article class="kpi"><span class="label">Aceptadas</span><strong id="kpi-accepted">–</strong><span class="hint">desde el arranque</span></article>
+        <article class="kpi alert"><span class="label">Alertas</span><strong id="kpi-alerts">–</strong><span class="hint"><span id="kpi-suppressed">0</span> agrupadas por enfriamiento</span></article>
+        <article class="kpi warn"><span class="label">A la DLQ</span><strong id="kpi-invalid">–</strong><span class="hint">mensajes rechazados</span></article>
+        <article class="kpi"><span class="label">Duplicados</span><strong id="kpi-duplicates">–</strong><span class="hint">descartados</span></article>
+    </section>
+
+    <section class="grid">
+        <article class="panel chart-panel">
+            <h2>Operaciones por minuto <small>ventana tumbling de 1 min</small></h2>
+            <svg id="chart" viewBox="0 0 640 220" role="img" aria-label="Operaciones por minuto en los últimos 15 minutos"></svg>
+        </article>
+        <article class="panel">
+            <h2>Por país <small>últimos 15 min</small></h2>
+            <ul id="countries" class="bars"></ul>
+        </article>
+    </section>
+
+    <section class="grid">
+        <article class="panel feed-panel">
+            <h2>Alertas en vivo <small>SSE desde el tópico <code>fraud-alerts</code></small></h2>
+            <ul id="alerts" class="alerts"><li class="empty">Esperando a la primera alerta…</li></ul>
+        </article>
+        <article class="panel">
+            <h2>Tarjeta <small>interactive query</small></h2>
+            <div id="card" class="card-detail"><p class="empty">Pulsa una alerta para consultar el estado de su tarjeta.</p></div>
+        </article>
+    </section>
+</main>
+<script src="app.js"></script>
+</body>
+</html>

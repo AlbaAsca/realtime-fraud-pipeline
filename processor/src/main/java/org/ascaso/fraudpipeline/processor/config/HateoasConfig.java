@@ -1,0 +1,11 @@
+package org.ascaso.fraudpipeline.processor.config;
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.hateoas.config.EnableHypermediaSupport;
+import org.springframework.hateoas.config.EnableHypermediaSupport.HypermediaType;
+import org.springframework.hateoas.support.WebStack;
+
+@Configuration
+@EnableHypermediaSupport(type = HypermediaType.HAL, stacks = WebStack.WEBFLUX)
+public class HateoasConfig {
+}

@@ -1,0 +1,44 @@
+spring:
+  application:
+    name: fraud-processor
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:29092}
+    consumer:
+      # Grupo propio por instancia: cada una necesita todas las alertas para su panel, no un reparto.
+      group-id: alert-feed-${random.uuid}
+      # Al arrancar relee el tópico para recuperar el histórico reciente del panel.
+      auto-offset-reset: earliest
+      isolation-level: read-committed
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    streams:
+      application-id: fraud-pipeline
+      state-dir: ${KAFKA_STREAMS_STATE_DIR:target/kafka-streams}
+      properties:
+        processing.guarantee: exactly_once_v2
+        num.stream.threads: 2
+        # Un error inesperado en una regla no debe parar el pipeline entero: se registra y se sigue.
+        processing.exception.handler: org.apache.kafka.streams.errors.LogAndContinueProcessingExceptionHandler
+
+fraud:
+  rules:
+    velocity-threshold: 8
+    velocity-window: 60s
+    velocity-advance: 10s
+    window-grace: 30s
+    travel-min-km: 500
+    travel-max-kmh: 1000
+    spike-min-history: 5
+    spike-z-score: 3.5
+    spike-min-amount-eur: 300
+    alert-cooldown: 5m
+    dedup-window: 10m
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
